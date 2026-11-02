@@ -1,0 +1,13 @@
+{
+  "test_size": 120,
+  "accuracy": 0.8917,
+  "roc_auc": 0.7473,
+  "features": [
+    "cgpa",
+    "internships",
+    "projects",
+    "dsa_score",
+    "communication_score",
+    "backlogs"
+  ]
+}
