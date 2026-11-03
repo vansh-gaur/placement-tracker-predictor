@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import ApplicationForm from './components/ApplicationForm.jsx'
+import AuthPage from './components/AuthPage.jsx'
 import PredictorForm from './components/PredictorForm.jsx'
 import StatsCards from './components/StatsCards.jsx'
 import {
@@ -7,12 +8,15 @@ import {
   deleteApplication,
   fetchApplications,
   fetchStats,
+  getToken,
+  setToken,
   updateApplication,
 } from './api.js'
 
 const STATUSES = ['Applied', 'Shortlisted', 'Interview', 'Offer', 'Rejected']
 
 export default function App() {
+  const [loggedIn, setLoggedIn] = useState(Boolean(getToken()))
   const [applications, setApplications] = useState([])
   const [stats, setStats] = useState(null)
   const [filter, setFilter] = useState('')
@@ -29,14 +33,18 @@ export default function App() {
       setApplications(apps)
       setStats(statsData)
     } catch (err) {
+      if (err.message.includes('authentication') || err.message.includes('token')) {
+        setToken(null)
+        setLoggedIn(false)
+      }
       setError(err.message)
     }
   }
 
   useEffect(() => {
-    refresh()
+    if (loggedIn) refresh()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter])
+  }, [filter, loggedIn])
 
   async function handleSubmit(form) {
     try {
@@ -62,11 +70,23 @@ export default function App() {
     }
   }
 
+  function handleLogout() {
+    setToken(null)
+    setLoggedIn(false)
+    setApplications([])
+    setStats(null)
+  }
+
+  if (!loggedIn) {
+    return <AuthPage onLoggedIn={() => setLoggedIn(true)} />
+  }
+
   return (
     <main className="layout">
       <header>
         <h1>Placement Tracker</h1>
         <p className="muted">Track applications and check an estimated placement chance.</p>
+        <button className="secondary" onClick={handleLogout}>Log out</button>
       </header>
 
       {error && <p className="error">{error}</p>}

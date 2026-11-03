@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { predictPlacement } from '../api.js'
 
+// Defaults are a mid-range synthetic profile, not a guaranteed outcome.
+// Ranges match the backend validation.
 const emptyInputs = {
-  cgpa: 8.0,
+  cgpa: 7.5,
   internships: 1,
   projects: 2,
-  dsa_score: 70,
-  communication_score: 70,
+  dsa_score: 60,
+  communication_score: 65,
   backlogs: 0,
 }
 
@@ -35,7 +37,9 @@ export default function PredictorForm() {
     <section className="card">
       <h2>Placement chance predictor</h2>
       <p className="muted">
-        Enter your profile details to get an estimated placement chance from the trained model.
+        Enter your profile details to get an estimated placement chance from
+        the model trained on synthetic data (see the README). This is an
+        estimate, not a guarantee.
       </p>
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>

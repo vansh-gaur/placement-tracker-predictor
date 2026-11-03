@@ -1,8 +1,11 @@
-"""Generate the synthetic training dataset for the placement predictor.
+"""Generate synthetic training data for the placement predictor.
 
-The data is synthetic on purpose: it models how placement outcomes tend to
-vary with CGPA, internships, projects, DSA, communication and backlogs, so
-the predictor can be trained and demoed without real student records.
+This data is synthetic, on purpose and labelled as such everywhere
+it is used. It models how placement outcomes tend to vary with CGPA,
+internships, projects, DSA score, communication score, and backlogs,
+so the predictor can be trained and demoed without real student
+records. It is not Chandigarh University data, and it is not any
+other institution's real placement data.
 
 Run from the project root:
     python ml/generate_data.py
@@ -13,10 +16,6 @@ import os
 import random
 
 SEED = 42
-# 5000 rows instead of 600: with only 600 rows the test set had just
-# 18 not-placed students, so the metrics jumped around a lot from one
-# split to the next. More data does not raise the ceiling (see train.py),
-# it just measures the model honestly.
 ROWS = 5000
 OUTPUT = os.path.join(os.path.dirname(__file__), "placement_data.csv")
 
