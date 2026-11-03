@@ -1,7 +1,14 @@
 {
-  "test_size": 120,
-  "accuracy": 0.8917,
-  "roc_auc": 0.7473,
+  "test_size": 1000,
+  "best_model": "Logistic Regression",
+  "cv_roc_auc": {
+    "Logistic Regression": 0.7865,
+    "Random Forest": 0.7334,
+    "HistGradientBoosting": 0.7358
+  },
+  "accuracy": 0.861,
+  "roc_auc": 0.7828,
+  "balanced_accuracy": 0.5638,
   "features": [
     "cgpa",
     "internships",

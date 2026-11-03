@@ -13,7 +13,11 @@ import os
 import random
 
 SEED = 42
-ROWS = 600
+# 5000 rows instead of 600: with only 600 rows the test set had just
+# 18 not-placed students, so the metrics jumped around a lot from one
+# split to the next. More data does not raise the ceiling (see train.py),
+# it just measures the model honestly.
+ROWS = 5000
 OUTPUT = os.path.join(os.path.dirname(__file__), "placement_data.csv")
 
 

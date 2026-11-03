@@ -145,23 +145,40 @@ python ml/train.py
 
 Details:
 
-- 600 rows, seed 42
+- 5000 rows, seed 42 (4267 placed, 733 not placed)
 - Features: cgpa, internships, projects, dsa_score, communication_score, backlogs
+- Model selection: Logistic Regression, Random Forest and
+  HistGradientBoosting compared with 5-fold cross-validation on the
+  training set, best by ROC-AUC wins — Logistic Regression won
+  (CV ROC-AUC 0.7865, vs 0.7334 for Random Forest and 0.7358 for
+  HistGradientBoosting)
 - Model: StandardScaler followed by Logistic Regression (scikit-learn pipeline)
 - Split: 80% train / 20% test, stratified, seed 42
 - Saved to `backend/model.pkl` by `ml/train.py` (generated locally, not
   committed — see "Train the model first" above)
 
-Results from the last training run (120 held-out test rows):
+Results from the last training run (1000 held-out test rows):
 
-- Accuracy: 0.8917
-- ROC-AUC: 0.7473
+- Accuracy: 0.861
+- ROC-AUC: 0.7828
+- Balanced accuracy: 0.5638
 
-Read those two numbers together. The synthetic data is imbalanced
-(508 placed, 92 not placed), so accuracy on its own looks better than
-the model really is. ROC-AUC is the more useful figure here, and it
-shows a useful but far from perfect model, which is expected from six
-simple features and synthetic data.
+Read those three numbers together. The synthetic data is imbalanced
+(about 85% placed), so accuracy on its own looks better than the model
+really is — a model predicting "placed" for everyone would already get
+about 85%. ROC-AUC is the more useful figure here, and balanced
+accuracy shows the weak spot: the model is much better at spotting
+placed students than not-placed ones, which is expected when the
+not-placed class is small.
+
+There is also a hard ceiling here, and it is not a tuning problem:
+placement in this data is sampled probabilistically, so a strong
+profile can still miss out and a weaker one can still get in. Even a
+model trained on 50,000 rows from the same process tops out around
+ROC-AUC 0.77–0.78 on fresh data. A higher number would only come from
+making the synthetic data artificially easy, or from leaking the test
+set — neither of which would make the predictor better on a new
+student, so neither was done.
 
 Prediction bands used by the API:
 
