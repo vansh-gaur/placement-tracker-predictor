@@ -53,6 +53,7 @@ placement-tracker-predictor/
     generate_data.py     # Generates the synthetic training dataset
     placement_data.csv   # 600 synthetic rows
     train.py             # Trains and evaluates the model
+    requirements.txt     # scikit-learn and joblib, needed by train.py
     metrics.json         # Test metrics from the last training run
 ```
 
@@ -61,12 +62,24 @@ placement-tracker-predictor/
 ### Train the model first
 
 The trained model file is generated locally and not committed, so run
-this once before starting the backend:
+this once before starting the backend. Training needs scikit-learn and
+joblib, which are listed in `ml/requirements.txt` — install those first
+(the data generation script itself needs no extra packages, which is why
+it runs even before this step):
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r ml/requirements.txt
 python ml/generate_data.py
 python ml/train.py
 ```
+
+On Windows, use `.venv\Scripts\activate` instead of
+`source .venv/bin/activate`. If you already installed
+`backend/requirements.txt` in a virtual environment, that environment
+already has scikit-learn and joblib, so you can just run the two
+`python ml/...` commands in it instead.
 
 This writes `backend/model.pkl`, which the API loads on startup.
 

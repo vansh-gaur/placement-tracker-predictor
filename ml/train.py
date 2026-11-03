@@ -16,12 +16,18 @@ import csv
 import json
 import os
 
-import joblib
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, roc_auc_score
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+try:
+    import joblib
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import accuracy_score, roc_auc_score
+    from sklearn.model_selection import train_test_split
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+except ModuleNotFoundError as exc:
+    raise SystemExit(
+        f"Missing package: {exc.name}. Install the training requirements first:\n"
+        "    pip install -r ml/requirements.txt"
+    ) from exc
 
 FEATURES = [
     "cgpa",
